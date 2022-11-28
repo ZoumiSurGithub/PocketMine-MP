@@ -1335,6 +1335,19 @@ class Server{
 
 		return count($recipients);
 	}
+	
+	/**
+     * @param Player[]|null $recipients
+     */
+    public function broadcastToastNotification(string $title, string $body, ?array $recipients = null) : int{
+        $recipients = $recipients ?? $this->getPlayerBroadcastSubscribers(self::BROADCAST_CHANNEL_USERS);
+
+        foreach($recipients as $recipient){
+            $recipient->getNetworkSession()->onToastNotification($title, $body);
+        }
+
+        return count($recipients);
+    }
 
 	/**
 	 * @param Player[]            $players
